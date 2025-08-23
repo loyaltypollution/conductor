@@ -4,7 +4,7 @@
   "version": "0.2.1",
   "description": "",
   "type": "module",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "build": "rollup -c",
     "prepack": "yarn build",
