@@ -9,3 +9,7 @@ export * from "./conductor/module";
 export * from "./conductor/runner";
 export * from "./conductor/stdlib";
 export * from "./conductor/strings";
+
+// Export common errors
+export { ConductorError, EvaluatorTypeError } from "./common/errors";
+export { EvaluatorError } from "./common/errors/EvaluatorError";
