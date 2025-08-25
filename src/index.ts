@@ -1,8 +1,11 @@
-// Export plugins
-export { BasicHostPlugin } from './conductor/host/BasicHostPlugin';
-export { IHostPlugin } from './conductor/host/types';
+// Export everything from conduit
+export * from "./conduit";
 
-// Export conduit
-export { Conduit } from './conduit';
-export { IConduit } from './conduit/types';
-export { IChannel, IPlugin, PluginClass, Subscriber } from './conduit/types';
+// Export conductor-related modules
+export * from "./conductor/host";
+export * from "./conductor/util";
+export * from "./conductor/types";
+export * from "./conductor/module";
+export * from "./conductor/runner";
+export * from "./conductor/stdlib";
+export * from "./conductor/strings";
