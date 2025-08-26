@@ -10,6 +10,10 @@ export * from "./conductor/runner";
 export * from "./conductor/stdlib";
 export * from "./conductor/strings";
 
-// Export common errors
-export { ConductorError, EvaluatorTypeError } from "./common/errors";
+// Export common modules
+export * from "./common/errors";
+export * from "./common/util";
 export { EvaluatorError } from "./common/errors/EvaluatorError";
+
+// Export initialise method
+export { initialise } from "./conductor/runner/util";
