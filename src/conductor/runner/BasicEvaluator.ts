@@ -1,4 +1,5 @@
 import { ConductorInternalError } from "../../common/errors";
+import { RunnerStatus } from "../types/RunnerStatus";
 import { IEvaluator, IRunnerPlugin } from "./types";
 
 export abstract class BasicEvaluator implements IEvaluator {
@@ -8,9 +9,13 @@ export abstract class BasicEvaluator implements IEvaluator {
         const initialChunk = await this.conductor.requestFile(entryPoint);
         if (!initialChunk) throw new ConductorInternalError("Cannot load entrypoint file");
         await this.evaluateFile(entryPoint, initialChunk);
-        while (true) {
+        while (!this.conductor.isStatusActive(RunnerStatus.STOPPED)) {
+            this.conductor.updateStatus(RunnerStatus.WAITING, true);
             const chunk = await this.conductor.requestChunk();
+            this.conductor.updateStatus(RunnerStatus.WAITING, false);
+            this.conductor.updateStatus(RunnerStatus.RUNNING, true);
             await this.evaluateChunk(chunk);
+            this.conductor.updateStatus(RunnerStatus.RUNNING, false);
         }
     }
 
