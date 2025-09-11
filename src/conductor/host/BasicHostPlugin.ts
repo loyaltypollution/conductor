@@ -19,8 +19,6 @@ export abstract class BasicHostPlugin implements IHostPlugin {
     private readonly __serviceChannel: IChannel<IServiceMessage>;
     private readonly __ioChannel: IChannel<IIOMessage>;
 
-    private readonly __status = new Map<RunnerStatus, boolean>();
-
     private __chunkCount: number = 0;
 
     // @ts-expect-error TODO: figure proper way to typecheck this
@@ -63,10 +61,6 @@ export abstract class BasicHostPlugin implements IHostPlugin {
 
     receiveError?(message: ConductorError): void;
 
-    isStatusActive(status: RunnerStatus): boolean {
-        return this.__status.get(status) ?? false;
-    }
-
     receiveStatusUpdate?(status: RunnerStatus, isActive: boolean): void;
 
     registerPlugin<Arg extends any[], T extends IPlugin>(pluginClass: PluginClass<Arg, T>, ...arg: Arg): NoInfer<T> {
@@ -100,7 +94,6 @@ export abstract class BasicHostPlugin implements IHostPlugin {
 
         statusChannel.subscribe((statusMessage: IStatusMessage) => {
             const {status, isActive} = statusMessage;
-            this.__status.set(status, isActive);
             this.receiveStatusUpdate?.(status, isActive);
         });
 

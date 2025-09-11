@@ -72,13 +72,6 @@ export interface IHostPlugin extends IPlugin {
     receiveError?(message: ConductorError): void;
 
     /**
-     * Checks if a runner status is active.
-     * @param status The runner status to check.
-     * @returns true if the given status is active.
-     */
-    isStatusActive(status: RunnerStatus): boolean;
-
-    /**
      * An event handler called when a status update is received.
      * @param message The status update received.
      * @param isActive Is the specified status currently active?

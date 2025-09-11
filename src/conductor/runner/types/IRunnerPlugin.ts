@@ -51,6 +51,13 @@ export interface IRunnerPlugin extends IPlugin {
     updateStatus(status: RunnerStatus, isActive: boolean): void;
 
     /**
+     * Checks if a runner status is active.
+     * @param status The runner status to check.
+     * @returns true if the given status is active.
+     */
+    isStatusActive(status: RunnerStatus): boolean;
+
+    /**
      * Informs the host to load a plugin.
      * @param pluginName The name of the plugin to load.
      */

@@ -28,6 +28,8 @@ export class RunnerPlugin implements IRunnerPlugin {
     private readonly __errorChannel: IChannel<IErrorMessage>;
     private readonly __statusChannel: IChannel<IStatusMessage>;
 
+    private readonly __status = new Map<RunnerStatus, boolean>();
+
     // @ts-expect-error TODO: figure proper way to typecheck this
     private readonly __serviceHandlers = new Map<ServiceMessageType, (message: IServiceMessage) => void>([
         [ServiceMessageType.HELLO, function helloServiceHandler(this: RunnerPlugin, message: HelloServiceMessage) {
@@ -74,7 +76,12 @@ export class RunnerPlugin implements IRunnerPlugin {
     }
 
     updateStatus(status: RunnerStatus, isActive: boolean): void {
+        this.__status.set(status, isActive);
         this.__statusChannel.send({ status, isActive });
+    }
+
+    isStatusActive(status: RunnerStatus): boolean {
+        return this.__status.get(status) ?? false;
     }
 
     hostLoadPlugin(pluginName: string): void {
