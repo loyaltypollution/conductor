@@ -1,6 +1,6 @@
+import { Conduit, type IConduit, type ILink } from "../../../conduit";
 import { RunnerPlugin } from "../RunnerPlugin";
-import { Conduit, IConduit, ILink } from "../../../conduit";
-import { EvaluatorClass, IRunnerPlugin } from "../types";
+import type { EvaluatorClass, IRunnerPlugin } from "../types";
 
 /**
  * Initialise this runner with the evaluator to be used.

@@ -2,6 +2,7 @@
     "compilerOptions": {
         "strict": true,
         "noImplicitOverride": true,
+        "verbatimModuleSyntax": true,
         "module": "ESNext",
         "moduleResolution": "bundler",
         "target": "ESNext",

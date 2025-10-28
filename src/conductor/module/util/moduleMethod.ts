@@ -1,4 +1,4 @@
-import { DataType, ExternCallable, IFunctionSignature } from "../../types";
+import type { DataType, IFunctionSignature, ExternCallable } from "../../types";
 
 export function moduleMethod<const Arg extends readonly DataType[], Ret extends DataType>(args: Arg, returnType: Ret) {
     const signature = {args, returnType} as const satisfies IFunctionSignature<Arg, Ret>;

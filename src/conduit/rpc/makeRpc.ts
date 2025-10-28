@@ -1,5 +1,5 @@
-import { IChannel } from "../types";
-import { IRpcMessage, Remote, RpcCallMessage, RpcErrorMessage, RpcMessageType, RpcReturnMessage } from "./types";
+import type { IChannel } from "../types";
+import { RpcCallMessage, RpcErrorMessage, RpcMessageType, RpcReturnMessage, type IRpcMessage, type Remote } from "./types";
 
 export function makeRpc<ISelf, IOther>(channel: IChannel<IRpcMessage>, self: ISelf): Remote<IOther> {
     const waiting: [Function, Function][] = [];

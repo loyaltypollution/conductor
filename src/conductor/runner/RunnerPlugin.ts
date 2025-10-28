@@ -2,16 +2,16 @@ import { Constant } from "../../common/Constant";
 import type { ConductorError } from "../../common/errors";
 import { ConductorInternalError } from "../../common/errors/ConductorInternalError";
 import { importExternalPlugin, importExternalModule } from "../../common/util";
-import { IConduit, IChannelQueue, IChannel, ChannelQueue, IPlugin, makeRpc, PluginClass, Remote, checkIsPluginClass } from "../../conduit";
-import type { IHostFileRpc } from "../host";
-import { IModulePlugin, ModuleClass } from "../module";
-import { InternalChannelName, InternalPluginName } from "../strings";
-import { Chunk, IChunkMessage, IServiceMessage, IIOMessage, IStatusMessage, RunnerStatus, ServiceMessageType, HelloServiceMessage, AbortServiceMessage, type EntryServiceMessage, IErrorMessage, PluginServiceMessage } from "../types";
-import { IRunnerPlugin, IEvaluator, IInterfacableEvaluator, EvaluatorClass } from "./types";
+import { type IConduit, type IChannelQueue, ChannelQueue, makeRpc, checkIsPluginClass, type IChannel, type IPlugin, type PluginClass, type Remote } from "../../conduit";
+import type { IHostFileRpc, IHostPluginRpc } from "../host";
+import type { IModulePlugin, ModuleClass } from "../module";
+import { InternalChannelName, InternalPluginId } from "../strings";
+import { RunnerStatus, ServiceMessageType, HelloServiceMessage, AbortServiceMessage, type EntryServiceMessage, type Chunk, type IChunkMessage, type IErrorMessage, type IIOMessage, type IResultMessage, type IServiceMessage, type IStatusMessage, } from "../types";
+import { type EvaluatorClass, type IEvaluator, type IInterfacableEvaluator, type IRunnerPlugin } from "./types";
 
 @checkIsPluginClass
 export class RunnerPlugin implements IRunnerPlugin {
-    name = InternalPluginName.RUNNER_MAIN;
+    id = InternalPluginId.RUNNER_MAIN;
 
     private readonly __evaluator: IEvaluator | IInterfacableEvaluator;
     private readonly __isCompatibleWithModules: boolean;
@@ -20,8 +20,10 @@ export class RunnerPlugin implements IRunnerPlugin {
     private readonly __chunkQueue: IChannelQueue<IChunkMessage>;
     private readonly __serviceChannel: IChannel<IServiceMessage>;
     private readonly __ioQueue: IChannelQueue<IIOMessage>;
+    private readonly __resultChannel: IChannel<IResultMessage>;
     private readonly __errorChannel: IChannel<IErrorMessage>;
     private readonly __statusChannel: IChannel<IStatusMessage>;
+    private readonly __pluginRpc: Remote<IHostPluginRpc>;
 
     // @ts-expect-error TODO: figure proper way to typecheck this
     private readonly __serviceHandlers = new Map<ServiceMessageType, (message: IServiceMessage) => void>([
@@ -64,6 +66,10 @@ export class RunnerPlugin implements IRunnerPlugin {
         this.__ioQueue.send({ message });
     }
 
+    sendResult(result: any): void {
+        this.__resultChannel.send({ result });
+    }
+
     sendError(error: ConductorError): void {
         this.__errorChannel.send({ error });
     }
@@ -72,8 +78,12 @@ export class RunnerPlugin implements IRunnerPlugin {
         this.__statusChannel.send({ status, isActive });
     }
 
-    hostLoadPlugin(pluginName: string): void {
-        this.__serviceChannel.send(new PluginServiceMessage(pluginName));
+    hostLoadPlugin(pluginId: string): void {
+        this.__pluginRpc.$requestLoadPlugin(pluginId);
+    }
+
+    async hostQueryPluginResolutions(pluginId: string): Promise<Record<string, string>> {
+        return this.__pluginRpc.queryPluginResolutions(pluginId);
     }
 
     registerPlugin<Arg extends any[], T extends IPlugin>(pluginClass: PluginClass<Arg, T>, ...arg: Arg): NoInfer<T> {
@@ -103,10 +113,10 @@ export class RunnerPlugin implements IRunnerPlugin {
         return this.registerModule(moduleClass);
     }
 
-    static readonly channelAttach = [InternalChannelName.FILE, InternalChannelName.CHUNK, InternalChannelName.SERVICE, InternalChannelName.STANDARD_IO, InternalChannelName.ERROR, InternalChannelName.STATUS];
+    static readonly channelAttach = [InternalChannelName.FILE, InternalChannelName.CHUNK, InternalChannelName.SERVICE, InternalChannelName.STANDARD_IO, InternalChannelName.RESULT, InternalChannelName.ERROR, InternalChannelName.STATUS, InternalChannelName.PLUGIN];
     constructor(
         conduit: IConduit,
-        [fileChannel, chunkChannel, serviceChannel, ioChannel, errorChannel, statusChannel]: IChannel<any>[],
+        [fileChannel, chunkChannel, serviceChannel, ioChannel, resultChannel, errorChannel, statusChannel, pluginChannel]: IChannel<any>[],
         evaluatorClass: EvaluatorClass
     ) {
         this.__conduit = conduit;
@@ -114,8 +124,10 @@ export class RunnerPlugin implements IRunnerPlugin {
         this.__chunkQueue = new ChannelQueue(chunkChannel);
         this.__serviceChannel = serviceChannel;
         this.__ioQueue = new ChannelQueue(ioChannel);
+        this.__resultChannel = resultChannel;
         this.__errorChannel = errorChannel;
         this.__statusChannel = statusChannel;
+        this.__pluginRpc = makeRpc<{}, IHostPluginRpc>(pluginChannel, {});
 
         this.__serviceChannel.send(new HelloServiceMessage());
         this.__serviceChannel.subscribe(message => {

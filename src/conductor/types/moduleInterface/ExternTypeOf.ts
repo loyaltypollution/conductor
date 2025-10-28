@@ -1,7 +1,7 @@
 import type { ArrayIdentifier } from "./ArrayIdentifier";
 import type { ClosureIdentifier } from "./ClosureIdentifier";
 import { DataType } from "./DataType";
-import { List } from "./List";
+import type { List } from "./List";
 import type { OpaqueIdentifier } from "./OpaqueIdentifier";
 import type { PairIdentifier } from "./PairIdentifier";
 

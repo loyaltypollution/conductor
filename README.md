@@ -37,7 +37,7 @@ Your implementation should be bundled using this file as the bundler's entry poi
 
 This is used by the host to locate your runner and execute it.
 It should contain things like the path to your entry point, editor information, and other information about your language.
-Consult `sa-languages` repository for more information. (TODO)
+Consult [`language-directory` repository](https://github.com/source-academy/language-directory) for more information.
 
 ## Module interface
 
@@ -79,3 +79,18 @@ as well as read and write data to it (or call it, in the case of closures). See 
 ### Standard library
 
 A standard library of functions must be made available to modules. See `conductor/stdlib` for sample implementations.
+
+## Plugins
+
+Plugins provide additional functionality not provided by the base Conductor framework.
+
+A Plugin is a class that implements `IPlugin` and contains the static field `channelAttach`: an array that specifies
+the name(s) of the `Channel`(s) this plugin will be communicating on.
+
+Upon registration of the Plugin with the Conduit, the class' constructor will be called with the following arguments:
+- the instance of the `Conduit` to attach to
+- an array of `Channel`s, corresponding to the entries in `channelAttach`, and
+- any additional arguments passed to the `registerPlugin` method 
+
+Most Plugins will not require the first argument, the `Conduit` instance. This is provided for the ability to
+load other Plugins as needed, as well as to communicate between Plugins.

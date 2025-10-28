@@ -7,7 +7,4 @@ export const enum ServiceMessageType {
 
     /** The evaluation entry point, sent from the host. See `EntryServiceMessage`. */
     ENTRY = 2,
-
-    /** Plugin advisory sent from the runner so the host may load a corresponding plugin. See `PluginServiceMessage`. */
-    PLUGIN = 3,
 };

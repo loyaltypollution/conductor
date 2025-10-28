@@ -1,4 +1,4 @@
-import { PluginClass } from "../../conduit";
+import type { PluginClass } from "../../conduit";
 
 /**
  * Imports an external plugin from a given location.

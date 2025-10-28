@@ -1,5 +1,5 @@
 import type { IModulePlugin } from "../../conductor/module";
-import { PluginClass } from "../../conduit";
+import type { PluginClass } from "../../conduit";
 import { importExternalPlugin } from "./importExternalPlugin";
 
 /**

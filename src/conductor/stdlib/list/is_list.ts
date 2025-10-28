@@ -1,4 +1,4 @@
-import { DataType, IDataHandler, TypedValue } from "../../types"
+import { DataType, type IDataHandler, type TypedValue } from "../../types"
 
 /**
  * Checks if a List is a true list (`tail(tail...(xs))` is empty-list).

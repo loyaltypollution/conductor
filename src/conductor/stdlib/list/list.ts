@@ -1,4 +1,4 @@
-import { DataType, IDataHandler, TypedValue } from "../../types";
+import { DataType, type IDataHandler, type TypedValue } from "../../types";
 import { mEmptyList } from "../../util";
 
 /**

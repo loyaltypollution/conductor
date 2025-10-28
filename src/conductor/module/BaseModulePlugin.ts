@@ -1,11 +1,12 @@
 import { ConductorInternalError } from "../../common/errors";
-import { checkIsPluginClass, IChannel, IConduit } from "../../conduit";
-import { IInterfacableEvaluator } from "../runner";
-import { ExternCallable, IDataHandler, IFunctionSignature } from "../types";
-import { IModulePlugin, IModuleExport } from "./types";
+import { checkIsPluginClass, type IConduit, type IChannel } from "../../conduit";
+import type { IInterfacableEvaluator } from "../runner";
+import type { IDataHandler, ExternCallable, IFunctionSignature } from "../types";
+import type { IModulePlugin, IModuleExport } from "./types";
 
 @checkIsPluginClass
 export abstract class BaseModulePlugin implements IModulePlugin {
+    abstract id: string;
     readonly exports: IModuleExport[] = [];
     readonly exportedNames: readonly (keyof this)[] = [];
 

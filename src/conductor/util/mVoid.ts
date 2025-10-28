@@ -1,4 +1,4 @@
-import { DataType, TypedValue } from "../types";
+import { DataType, type TypedValue } from "../types";
 
 export function mVoid(value: void = undefined): TypedValue<DataType.VOID> {
     return {

@@ -1,5 +1,5 @@
 import { MessageQueue } from "../common/ds";
-import { IChannelQueue, IChannel } from "./types";
+import type { IChannelQueue, IChannel } from "./types";
 
 export class ChannelQueue<T> implements IChannelQueue<T> {
     readonly name: string;

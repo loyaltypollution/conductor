@@ -1,5 +1,5 @@
 import { EvaluatorTypeError } from "../../../common/errors";
-import { DataType, IDataHandler, TypedValue } from "../../types"
+import { DataType, type IDataHandler, type TypedValue } from "../../types"
 
 /**
  * Gets the length of a List.

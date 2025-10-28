@@ -1,4 +1,4 @@
-import { DataType, IDataHandler, TypedValue } from "../../types"
+import { DataType, type IDataHandler, type TypedValue } from "../../types"
 
 /**
  * Accumulates a Closure over a List.

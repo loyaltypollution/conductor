@@ -1,2 +1,2 @@
 export { InternalChannelName } from "./InternalChannelName";
-export { InternalPluginName } from "./InternalPluginName";
+export { InternalPluginId } from "./InternalPluginId";

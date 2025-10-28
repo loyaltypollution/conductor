@@ -1,5 +1,5 @@
-import { IChannel } from "./IChannel";
-import { IConduit } from "./IConduit";
+import type { IChannel } from "./IChannel";
+import type { IConduit } from "./IConduit";
 import type { IPlugin } from "./IPlugin";
 
 export type PluginClass<Arg extends any[] = [], T = IPlugin> = {

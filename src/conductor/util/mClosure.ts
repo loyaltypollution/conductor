@@ -1,4 +1,4 @@
-import { ClosureIdentifier, DataType, TypedValue } from "../types";
+import { DataType, type ClosureIdentifier, type TypedValue } from "../types";
 
 export function mClosure(value: ClosureIdentifier<DataType>): TypedValue<DataType.CLOSURE> {
     return {

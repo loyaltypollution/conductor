@@ -1,4 +1,4 @@
-import { DataType, TypedValue, OpaqueIdentifier } from "../types";
+import { DataType, type TypedValue, type OpaqueIdentifier } from "../types";
 
 export function mOpaque(value: OpaqueIdentifier): TypedValue<DataType.OPAQUE> {
     return {

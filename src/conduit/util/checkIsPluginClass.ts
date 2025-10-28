@@ -1,5 +1,4 @@
-import { IPlugin } from "..";
-import { AbstractPluginClass, PluginClass } from "../types";
+import type { IPlugin, PluginClass, AbstractPluginClass } from "../types";
 
 /**
  * Typechecking utility decorator.

@@ -1,6 +1,6 @@
 import { ConductorInternalError } from "../common/errors/ConductorInternalError";
 import { Channel } from "./Channel";
-import { IConduit, ILink, IPlugin, IChannel, PluginClass } from "./types";
+import type { IConduit, ILink, IPlugin, IChannel, PluginClass } from "./types";
 
 export class Conduit implements IConduit {
     private __alive: boolean = true;
@@ -27,9 +27,9 @@ export class Conduit implements IConduit {
         }
         const plugin = new pluginClass(this, attachedChannels, ...arg);
 
-        if (plugin.name !== undefined) {
-            if (this.__pluginMap.has(plugin.name)) throw new ConductorInternalError(`Plugin ${plugin.name} already registered`);
-            this.__pluginMap.set(plugin.name, plugin);
+        if (plugin.id !== undefined) {
+            if (this.__pluginMap.has(plugin.id)) throw new ConductorInternalError(`Plugin ${plugin.id} already registered`);
+            this.__pluginMap.set(plugin.id, plugin);
         }
 
         this.__plugins.push(plugin);
@@ -46,15 +46,15 @@ export class Conduit implements IConduit {
         for (let i = this.__plugins.length - 1, e = this.__plugins.length - p; i >= e; --i) {
             delete this.__plugins[i];
         }
-        if (plugin.name) {
-            this.__pluginMap.delete(plugin.name);
+        if (plugin.id) {
+            this.__pluginMap.delete(plugin.id);
         }
         plugin.destroy?.();
     }
-    lookupPlugin(pluginName: string): IPlugin {
+    lookupPlugin(pluginId: string): IPlugin {
         this.__verifyAlive();
-        if (!this.__pluginMap.has(pluginName)) throw new ConductorInternalError(`Plugin ${pluginName} not registered`);
-        return this.__pluginMap.get(pluginName)!; // as the map has been checked
+        if (!this.__pluginMap.has(pluginId)) throw new ConductorInternalError(`Plugin ${pluginId} not registered`);
+        return this.__pluginMap.get(pluginId)!; // as the map has been checked
     }
     terminate(): void {
         this.__verifyAlive();

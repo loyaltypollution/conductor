@@ -1,5 +1,5 @@
 import { EvaluatorTypeError } from "../../../common/errors";
-import { IDataHandler, DataType, TypedValue } from "../../types";
+import { DataType, type IDataHandler, type TypedValue } from "../../types";
 
 export async function closure_arity_assert(this: IDataHandler, c: TypedValue<DataType.CLOSURE>, arity: number): Promise<void> {
     const a = await this.closure_arity(c);

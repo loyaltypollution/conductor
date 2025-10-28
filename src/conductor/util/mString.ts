@@ -1,4 +1,4 @@
-import { DataType, TypedValue } from "../types";
+import { DataType, type TypedValue } from "../types";
 
 export function mString(value: string): TypedValue<DataType.CONST_STRING> {
     return {

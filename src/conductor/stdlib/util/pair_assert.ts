@@ -1,5 +1,5 @@
 import { EvaluatorTypeError } from "../../../common/errors";
-import { DataType, IDataHandler, TypedValue } from "../../types";
+import { DataType, type IDataHandler, type TypedValue } from "../../types";
 import { isSameType } from "../../util";
 
 export async function pair_assert(this: IDataHandler, p: TypedValue<DataType.PAIR>, headType?: DataType, tailType?: DataType): Promise<void> {
